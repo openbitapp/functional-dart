@@ -18,7 +18,7 @@ class Fail {
       : _failedWith = Some(Right<Error, Exception>(exception));
 
   String get innerMessage =>
-      _failedWith.fold(() => '', (some) => some.toString());
+      _failedWith.fold(() => '', (some) => some.fold((l) => l.toString(), (r) => r.toString()));
 
   T fold<T>(T Function() noneF, T Function(Error err) errF,
       T Function(Exception exc) excF) {
@@ -91,9 +91,20 @@ class Fail {
 
 class BadResponseException implements IOException {
   final String message;
+  int statusCode;
 
-  const BadResponseException(int statusCode) : message = 'Bad response. Response code: $statusCode';
-  const BadResponseException.fromString (this.message);
+  BadResponseException(int statusCode) : message = 'Bad response. Response code: $statusCode', statusCode = statusCode;
+  BadResponseException.fromString (this.message) : statusCode = -1 {
+    final regExp =  RegExp(r'\d+',
+                              caseSensitive: false,
+                              multiLine: false);
+    
+    final match = regExp.stringMatch(message);
+    if (match != null)
+    {     
+      statusCode = int.parse(match);
+    }
+  }
 
   @override
   String toString() => message;
