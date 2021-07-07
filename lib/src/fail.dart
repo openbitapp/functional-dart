@@ -4,20 +4,18 @@ import 'dart:io';
 import 'package:gl_functional/gl_functional.dart';
 import 'package:gl_functional/src/either.dart';
 import 'package:gl_functional/src/option.dart';
-import 'package:meta/meta.dart';
+
 
 class Fail {
   final String message;
   final Option<Either<Error, Exception>> _failedWith;
 
   Fail(this.message) : _failedWith = None();
-  Fail.withError(this.message, {@required Error error})
-      : _failedWith =
-            error != null ? Some(Left<Error, Exception>(error)) : None();
-  Fail.withException(this.message, {@required Exception exception})
-      : _failedWith = exception != null
-            ? Some(Right<Error, Exception>(exception))
-            : None();
+  Fail.withError(this.message, {required Error error})
+      : _failedWith = Some(Left<Error, Exception>(error));
+      
+  Fail.withException(this.message, {required Exception exception})
+      : _failedWith = Some(Right<Error, Exception>(exception));
 
   String get innerMessage =>
       _failedWith.fold(() => '', (some) => some.toString());
@@ -102,12 +100,12 @@ class BadResponseException implements IOException {
 }
 
 extension ExceptionToFailExtension on Exception {
-  Fail toFail([String message]) => Fail.withException(message, exception: this);
+  Fail toFail([String message = '']) => Fail.withException(message, exception: this);
   Validation<T> toInvalid<T> () => toFail ().toInvalid<T>();
 }
 
 extension ErrorToFailExtension on Error {
-  Fail toFail([String message]) => Fail.withError(message, error: this);
+  Fail toFail([String message = '']) => Fail.withError(message, error: this);
   Validation<T> toInvalid<T> () => toFail ().toInvalid<T>();
 }
 

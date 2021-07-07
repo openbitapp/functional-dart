@@ -24,13 +24,13 @@ class FriendOfAnimals {
 
 class Person {
   final Option<int> eta;
-  Person({int eta}) : eta = eta != null ? Some(eta) : None<int>();
+  Person({int eta = 0}) : eta = eta != null ? Some(eta) : None<int>();
 }
 
 void main() {
   group('A group of tests', () {
-    Option<int> option;
-    Iterable<Person> population;
+    var option = Option.some(0);
+    Iterable<Person> population = [Person(eta: 40), Person(), Person(eta: 10)];
 
     setUp(() {
       option = Option.some(3);
@@ -89,13 +89,13 @@ void main() {
 
       final validation = Invalid<int>([Fail('Fake error')]);
 
-      String test({int i, String s}) => '$s $i';
+      String test({int i = 0, String s = ''}) => '$s $i';
 
-      final testPartial = ({int i}) => ({String s}) => test(i: i, s: s);
+      final testPartial = ({int i = 0}) => ({String s = ''}) => test(i: i, s: s);
       final tp2 = testPartial(i: 10);
       print(tp2(s: 'ciao'));
 
-      final testPartialSwapped = ({String s}) => ({int i}) => test(i: i, s: s);
+      final testPartialSwapped = ({String s= ''}) => ({int i = 0}) => test(i: i, s: s);
       final tpswapped = testPartialSwapped(s: 'ciao swapped');
       print(tpswapped(i: 20));
 

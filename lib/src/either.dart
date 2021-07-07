@@ -2,8 +2,8 @@ Either<L, R> Left<L, R>(L left) => Either.left(left);
 Either<L, R> Right<L, R>(R right) => Either.right(right);
 
 class Either<L, R> {
-  final L _left;
-  final R _right;
+  final L? _left;
+  final R? _right;
 
   bool get isLeft => _left != null;
   bool get isRight => !isLeft;
@@ -17,7 +17,8 @@ class Either<L, R> {
         _left = null;
 
   TR fold<TR>(TR Function(L l) leftF, TR Function(R r) rightF) =>
-      isLeft ? leftF(_left) : rightF(_right);
+    isLeft ? leftF(_left!) : rightF(_right!);
+      
 
   Either<L, RR> map<RR>(RR Function(R r) f) =>
       fold((l) => Left(l), (right) => Right(f(right)));

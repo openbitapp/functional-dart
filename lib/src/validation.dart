@@ -5,7 +5,7 @@ Validation<T> Invalid<T>(Iterable<Fail> failures) => Validation.invalid(failures
 
 class Validation<T> {
   final Iterable<Fail> _failures;
-  final T _value;
+  final T? _value;
   bool get isValid => _failures.isEmpty;
 
   Validation.valid(T value)
@@ -18,13 +18,13 @@ class Validation<T> {
   TR fold<TR>(TR Function(Iterable<Fail> failures) invalid, 
               TR Function(T val) valid) 
   {
-    return isValid ? valid(_value) : invalid(_failures);
+    return isValid ? valid(_value!) : invalid(_failures);
   }
       
 
   Iterable<T> asIterable() sync* {
     if (isValid) {
-      yield _value;
+      yield _value!;
     }
   }
 
@@ -51,7 +51,7 @@ class Validation<T> {
     catch (e)
     {
       final fail = e is Exception ? Fail.withException(failMessage, exception: e) 
-                                  : Fail.withError(failMessage, error: e);
+                                  : Fail.withError(failMessage, error: e as Error);
       return Invalid<T>([fail]);
     }
   }
@@ -82,10 +82,10 @@ extension FutureValidation on Future<Validation> {
 
 
   Future<Validation<R>> map<R, T>(R Function(T t) f) =>
-      fold((err) => Invalid<R>(err), (v) => Valid(f(v)));
+      fold((err) => Invalid<R>(err), (v) => Valid(f(v! as T)));
 
   Future<Validation<R>> bind<R, T>(Validation<R> Function(T t) f) =>
-      fold((fail) => Invalid<R>(fail), (v) => f(v));
+      fold((fail) => Invalid<R>(fail), (v) => f(v! as T));
 
   Future<TR> foldFuture<TR, T>(Future<TR> Function(Iterable<Fail> failures) invalid, 
                                                   Future<TR> Function(T val) valid) 
@@ -98,8 +98,8 @@ extension FutureValidation on Future<Validation> {
 
   Future<Validation<R>> mapFuture<R, T>(Future<R> Function(T t) f) =>
       foldFuture((err) => Invalid<R>(err).toFuture(), 
-                 (v)   => f(v).then((value) => Valid(value)));
+                 (v)   => f(v! as T).then((value) => Valid(value)));
 
   Future<Validation<R>> bindFuture<R, T>(Future<Validation<R>> Function(T t) f) =>
-      foldFuture((fail) => Invalid<R>(fail).toFuture(), (v) => f(v));
+      foldFuture((fail) => Invalid<R>(fail).toFuture(), (v) => f(v! as T));
 }

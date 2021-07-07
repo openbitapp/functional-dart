@@ -7,7 +7,7 @@ Option<T> None<T>() => Option.none();
 Option<T> Some<T>(T value) => Option.some(value);
 
 class Option<T> {
-  final T _value;
+  final T? _value;
   final bool isSome;
 
   const Option.some(this._value) : isSome = true;
@@ -16,7 +16,7 @@ class Option<T> {
         isSome = false;
 
   R fold<R>(R Function() none, R Function(T some) some) {
-    return isSome ? some(_value) : none();
+    return isSome ? some(_value!) : none();
   }
 
   Option<R> map<R>(R Function(T t) f) =>
@@ -32,7 +32,7 @@ class Option<T> {
 
   Iterable<T> asIterable() sync* {
     if (isSome) {
-      yield _value;
+      yield _value!;
     }
   }
 
@@ -67,16 +67,16 @@ extension FutureOption on Future<Option> {
   }
 
   Future<T> getOrElse<T>(T defaultVal) =>
-      fold(() => defaultVal, (some) => some);
+      fold(() => defaultVal, (some) => some! as T);
 
   Future<T> getOrElseDo<T>(T Function() fallback) =>
-      fold(() => fallback(), (some) => some);
+      fold(() => fallback(), (some) => some! as T);
 
   Future<Option<R>> map<R, T>(R Function(T t) f) =>
-      fold(() => None(), (v) => Some(f(v)));
+      fold(() => None(), (v) => Some(f(v! as T)));
 
   Future<Option<R>> bind<R, T>(Option<R> Function(T t) f) =>
-      fold(() => None(), (v) => f(v));
+      fold(() => None(), (v) => f(v! as T));
 
   Future<TR> foldFuture<TR, T>(
       Future<TR> Function() noneF, Future<TR> Function(T val) someF) {
@@ -85,10 +85,10 @@ extension FutureOption on Future<Option> {
   }
 
   Future<Option<R>> mapFuture<R, T>(Future<R> Function(T t) f) => foldFuture(
-      () => None().toFuture(), (some) => f(some).then((value) => Some(value)));
+      () => None().toFuture() as Future<Option<R>>, (some) => f(some! as T).then((value) => Some(value)));
 
   Future<Option<R>> bindFuture<R, T>(Future<Option<R>> Function(T t) f) =>
-      foldFuture(() => None().toFuture(), (v) => f(v));
+      foldFuture(() => None().toFuture() as Future<Option<R>>, (v) => f(v! as T));
 }
 
 class EmptyOption extends Option{
