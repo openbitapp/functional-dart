@@ -6,6 +6,7 @@ const Empty = EmptyOption.none();
 Option<T> None<T>() => Option.none();
 Option<T> Some<T>(T value) => Option.some(value);
 
+/// Classe che permette di gestire un valore o la sua assenza
 class Option<T> {
   final T? _value;
   final bool isSome;

@@ -24,7 +24,7 @@ class FriendOfAnimals {
 
 class Person {
   final Option<int> eta;
-  Person({int eta = 0}) : eta = eta != null ? Some(eta) : None<int>();
+  Person({int eta = 0}) : eta = Some(eta);
 }
 
 void main() {
@@ -85,9 +85,8 @@ void main() {
       expect(listEta.length, 2);
 
       final optionalAges = Some(listEta);
-      final adjustedAges = optionalAges.flatMap((t) => t.map((e) => e * 2));
-
-      final validation = Invalid<int>([Fail('Fake error')]);
+      optionalAges.flatMap((t) => t.map((e) => e * 2));
+      
 
       String test({int i = 0, String s = ''}) => '$s $i';
 
@@ -105,7 +104,7 @@ void main() {
       Option<int> getOne (bool isSome) => isSome ? Some(1) : None();
       Option<int> getTwo (bool isSome) => isSome ? Some(2) : None();
 
-      Future<Validation<String>> getValidation(bool isInerror) => isInerror ? Invalid<String>([Fail('Failed')]).toFuture()
+      Future<Validation<String>> getValidation(bool isInerror) => isInerror ? Invalid<String>([Exception('Failed').toFail()]).toFuture()
                                                                             : Valid('Stringa valida').toFuture();
       final oi = getOne(true).toFutureOrElseDo(() => 
                     getValidation(true).fold((failures) => None(), 
@@ -133,7 +132,7 @@ void main() {
                   ));
       expect(three.getOrElse(0), 3);
 
-      final error = AssertionError ().toFail().toIterable().toInvalid<int>().toFuture();
+      await AssertionError ().toFail().toIterable().toInvalid<int>().toFuture();
     });
   });
 }

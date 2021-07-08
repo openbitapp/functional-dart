@@ -50,8 +50,8 @@ class Validation<T> {
     }
     catch (e)
     {
-      final fail = e is Exception ? Fail.withException(failMessage, exception: e) 
-                                  : Fail.withError(failMessage, error: e as Error);
+      final fail = e is Exception ? Fail.withException(e, message: failMessage) 
+                                  : Fail.withError(e as Error, message: failMessage);
       return Invalid<T>([fail]);
     }
   }
@@ -60,11 +60,11 @@ class Validation<T> {
         => f().then(Valid)
               .catchError((err) {
                 if (err is Exception) {
-                  return Invalid<T>([Fail.withException('', exception: err)]);
+                  return Invalid<T>([Fail.withException(err)]);
                 }
                 else if (err is Error)
                 {
-                  return Invalid<T>([Fail.withError('', error: err)]);
+                  return Invalid<T>([Fail.withError(err)]);
                 }
               });
 }
