@@ -41,6 +41,9 @@ class Validation<T> {
   Validation<R> bind<R>(Validation<R> Function(T val) f) =>
       fold((fails) => Invalid<R>(fails), (v) => f(v));
 
+  Future<Validation<R>> bindFuture<R>(Future<Validation<R>> Function(T val) f) =>
+      fold((fails) => Invalid<R>(fails).toFuture(), (v) => f(v));
+
 
   Future<Validation<T>> toFuture() => Future(() => this);
 

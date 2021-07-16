@@ -132,7 +132,7 @@ void main() {
                   ));
       expect(three.getOrElse(0), 3);
 
-      await AssertionError ().toFail().toIterable().toInvalid<int>().toFuture();
+      await AssertionError ().toFail().toIterable().toInvalid<int>().toFuture();      
     });
   });
 }
