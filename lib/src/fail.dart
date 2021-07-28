@@ -1,5 +1,5 @@
-import 'package:gl_functional/gl_functional.dart';
-import 'package:gl_functional/src/either.dart';
+import 'package:functional_dart/functional_dart.dart';
+import 'package:functional_dart/src/either.dart';
 
 /// Classe di errore usata nella `Validation` e può contenere un `Error` o un'`Exception`
 /// Molto simile come concetto a `Either`

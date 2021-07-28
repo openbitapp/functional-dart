@@ -1,5 +1,5 @@
-import 'package:gl_functional/src/iterator_extensions.dart';
-import 'package:gl_functional/src/validation.dart';
+import 'package:functional_dart/src/iterator_extensions.dart';
+import 'package:functional_dart/src/validation.dart';
 
 const Empty = EmptyOption.none();
 

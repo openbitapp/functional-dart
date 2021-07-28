@@ -1,4 +1,4 @@
-import 'package:gl_functional/src/fail.dart';
+import 'package:functional_dart/src/fail.dart';
 
 Validation<T> Valid<T>(T value) => Validation.valid(value);
 Validation<T> Invalid<T>(Iterable<Fail> failures) => Validation.invalid(failures);

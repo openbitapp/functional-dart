@@ -1,4 +1,4 @@
-import 'package:gl_functional/src/option.dart';
+import 'package:functional_dart/src/option.dart';
 
 extension FunctionalIterable<T> on Iterable<T> {
   Iterable<R> bind<R>(Iterable<R> Function(T t) f) sync* {

@@ -1,6 +1,6 @@
-import 'package:gl_functional/gl_functional.dart';
-import 'package:gl_functional/src/option.dart';
-import 'package:gl_functional/src/validation.dart';
+import 'package:functional_dart/functional_dart.dart';
+import 'package:functional_dart/src/option.dart';
+import 'package:functional_dart/src/validation.dart';
 import 'package:test/test.dart';
 
 class Animal {
