@@ -1,5 +1,8 @@
 import 'package:functional_dart/src/fail.dart';
 
+typedef EmptyValidationValue = String;
+const EmptyValidationValue EmptyValue = '';
+
 Validation<T> Valid<T>(T value) => Validation.valid(value);
 Validation<T> Invalid<T>(Iterable<Fail> failures) => Validation.invalid(failures);
 
@@ -8,10 +11,11 @@ class Validation<T> {
   final T? _value;
   bool get isValid => _failures.isEmpty;
 
-  Validation.valid(T value)
+  const Validation.valid(T value)
       : _value = value,
-        _failures = <Fail>[];
-  Validation.invalid(Iterable<Fail> failures)
+        _failures = const <Fail>[];
+
+  const Validation.invalid(Iterable<Fail> failures)
       : _failures = failures,
         _value = null;
 
