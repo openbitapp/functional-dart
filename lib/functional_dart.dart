@@ -10,3 +10,4 @@ export 'src/validation.dart';
 export 'src/option.dart';
 export 'src/either.dart';
 export 'src/fail.dart';
+export 'src/try.dart';
