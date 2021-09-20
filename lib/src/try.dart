@@ -9,13 +9,13 @@ Validation<T> Try<T>(T Function () tryBlock) {
   {
     if(e is Error)
     {
-      return Fail.withError(e).toInvalid();
+      return Fail.withError(e).toInvalid<T>();
     }
     else if(e is Exception) {
-      return Fail.withException(e).toInvalid();
+      return Fail.withException(e).toInvalid<T>();
     }
     
-    return Fail.withError(Error(), message: 'Unknown error').toInvalid();
+    return Fail.withError(Error(), message: 'Unknown error').toInvalid<T>();
   }
 } 
 
@@ -27,6 +27,12 @@ extension TryExt on Future {
         } else if (err is Error) {
           return Invalid<T>([Fail.withError(err)]);
         }
+        else if(err is String)
+        {
+          return Invalid<T>([Fail.withError(ArgumentError(err))]);
+        }
+
+        return Fail.withError(Error(), message: 'Unknown error').toInvalid<T>();
       });
 }
 
@@ -38,5 +44,11 @@ extension TryFutureValidation on Future<Validation> {
         } else if (err is Error) {
           return Invalid<T>([Fail.withError(err)]);
         }
+        else if(err is String)
+        {
+          return Invalid<T>([Fail.withError(ArgumentError(err))]);
+        }
+
+        return Fail.withError(Error(), message: 'Unknown error').toInvalid<T>();
       });
 }
