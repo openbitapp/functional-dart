@@ -1,6 +1,6 @@
-import 'package:functional_dart/functional_dart.dart';
-import 'package:functional_dart/src/option.dart';
-import 'package:functional_dart/src/validation.dart';
+import 'package:bitapp_functional_dart/bitapp_functional_dart.dart';
+import 'package:bitapp_functional_dart/src/option.dart';
+import 'package:bitapp_functional_dart/src/validation.dart';
 import 'package:test/test.dart';
 
 class Animal {

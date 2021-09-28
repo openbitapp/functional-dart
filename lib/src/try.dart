@@ -1,4 +1,4 @@
-import 'package:functional_dart/functional_dart.dart';
+import 'package:bitapp_functional_dart/bitapp_functional_dart.dart';
 
 Validation<T> Try<T>(T Function () tryBlock) {
   try

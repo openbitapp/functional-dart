@@ -1,4 +1,4 @@
-import 'package:functional_dart/src/fail.dart';
+import 'package:bitapp_functional_dart/src/fail.dart';
 
 typedef EmptyValidationValue = String;
 const EmptyValidationValue EmptyValue = '';

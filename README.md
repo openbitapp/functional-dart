@@ -8,7 +8,7 @@ Created from templates made available by Stagehand under a BSD-style
 A simple usage example:
 
 ```dart
-import 'package:functional_dart/functional_dart.dart';
+import 'package:bitapp_functional_dart/bitapp_functional_dart.dart';
 
 main() {
   var awesome = new Awesome();
