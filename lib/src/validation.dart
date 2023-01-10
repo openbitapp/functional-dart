@@ -35,6 +35,9 @@ class Validation<T> {
   Validation<R> map<R>(R Function(T val) f) =>
       fold((err) => Invalid<R>(err), (v) => Valid(f(v)));
 
+  Future<Validation<R>> mapFuture<R>(Future<R> Function(T val) f) =>
+      fold((err) => Invalid<R>(err).toFuture(), (v) => f(v).then((value) => Valid(value)));
+
   Validation<void> forEach(void Function(T val) action) => map(action);
 
   Validation<T> andThen(void Function(T t) action) {
@@ -76,8 +79,13 @@ class Validation<T> {
               });
 }
 
-extension FutureValidation on Future<Validation> {
-  Future<TR> fold<TR, T>(TR Function(Iterable<Fail> failures) invalid, 
+extension Functionals on Object {
+  Validation<T> toValid<T>() => Valid(this as T);
+  Future<Validation<T>> toValidFuture<T>() => Valid(this as T).toFuture();
+}
+
+extension FutureValidation<T> on Future<Validation<T>> {
+  Future<TR> fold<TR>(TR Function(Iterable<Fail> failures) invalid,
               TR Function(T val) valid) 
   {
     return then(
@@ -88,13 +96,13 @@ extension FutureValidation on Future<Validation> {
   }
 
 
-  Future<Validation<R>> map<R, T>(R Function(T t) f) =>
-      fold((err) => Invalid<R>(err), (v) => Valid(f(v! as T)));
+  Future<Validation<R>> map<R>(R Function(T t) f) =>
+      fold((err) => Invalid<R>(err), (v) => Valid(f(v!)));
 
-  Future<Validation<R>> bind<R, T>(Validation<R> Function(T t) f) =>
-      fold((fail) => Invalid<R>(fail), (v) => f(v! as T));
+  Future<Validation<R>> bind<R>(Validation<R> Function(T t) f) =>
+      fold((fail) => Invalid<R>(fail), (v) => f(v!));
 
-  Future<TR> foldFuture<TR, T>(Future<TR> Function(Iterable<Fail> failures) invalid, 
+  Future<TR> foldFuture<TR>(Future<TR> Function(Iterable<Fail> failures) invalid,
                                                   Future<TR> Function(T val) valid) 
   {
     
@@ -103,10 +111,10 @@ extension FutureValidation on Future<Validation> {
   }
 
 
-  Future<Validation<R>> mapFuture<R, T>(Future<R> Function(T t) f) =>
+  Future<Validation<R>> mapFuture<R>(Future<R> Function(T t) f) =>
       foldFuture((err) => Invalid<R>(err).toFuture(), 
-                 (v)   => f(v! as T).then((value) => Valid(value)));
+                 (v)   => f(v!).then((value) => Valid(value)));
 
-  Future<Validation<R>> bindFuture<R, T>(Future<Validation<R>> Function(T t) f) =>
-      foldFuture((fail) => Invalid<R>(fail).toFuture(), (v) => f(v! as T));
+  Future<Validation<R>> bindFuture<R>(Future<Validation<R>> Function(T t) f) =>
+      foldFuture((fail) => Invalid<R>(fail).toFuture(), (v) => f(v!));
 }

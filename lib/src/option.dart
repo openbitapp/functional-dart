@@ -95,3 +95,7 @@ extension FutureOption on Future<Option> {
 class EmptyOption extends Option{
   const EmptyOption.none() : super.none();
 }
+
+class NoValue extends Option{
+  const NoValue.none() : super.none();
+}

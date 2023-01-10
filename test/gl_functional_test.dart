@@ -100,6 +100,24 @@ void main() {
 
     });
 
+    test('Concatenation test', () async {
+      Validation<double> getDouble() => 2.0.toValid<double>();
+      Future<int> getInt() => Future(() => 1);
+
+      Future<Validation<double>> getFutureDouble() => 2.0.toValidFuture<double>();
+      Future<Validation<int>> getFutureInt() => 2.toValidFuture<int>();
+
+      getFutureDouble()
+          .bindFuture((t) => getFutureInt())
+          .map((t) => NoValue);
+
+      getDouble()
+          .mapFuture((val) => getInt())
+          .fold(
+              (failures) => fail('Success expected'),
+              (val) => expect(1, val));
+    });
+
     test('Composition test', () async {
       Option<int> getOne (bool isSome) => isSome ? Some(1) : None();
       Option<int> getTwo (bool isSome) => isSome ? Some(2) : None();
