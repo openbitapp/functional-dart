@@ -80,8 +80,7 @@ class Validation<T> {
 }
 
 extension Functionals on Object {
-  Validation<T> toValid<T>() => Valid(this as T);
-  Future<Validation<T>> toValidFuture<T>() => Valid(this as T).toFuture();
+  Future<Validation<T>> toValidFuture<T>() => Valid<T>(this as T).toFuture();
 }
 
 extension FutureValidation<T> on Future<Validation<T>> {

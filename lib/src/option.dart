@@ -99,3 +99,7 @@ class EmptyOption extends Option{
 class NoValue extends Option{
   const NoValue.none() : super.none();
 }
+
+extension NoValueExtension on NoValue{
+  Validation<NoValue> toValid() => Valid(this);
+}

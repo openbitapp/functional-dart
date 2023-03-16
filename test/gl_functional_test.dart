@@ -101,10 +101,10 @@ void main() {
     });
 
     test('Concatenation test', () async {
-      Validation<double> getDouble() => 2.0.toValid<double>();
+      Validation<double> getDouble() => Valid(2.0);
       Future<int> getInt() => Future(() => 1);
 
-      Future<Validation<double>> getFutureDouble() => 2.0.toValidFuture<double>();
+      Future<Validation<double>> getFutureDouble() => 2.0.toValidFuture();
       Future<Validation<int>> getFutureInt() => 2.toValidFuture<int>();
 
       getFutureDouble()
@@ -116,6 +116,10 @@ void main() {
           .fold(
               (failures) => fail('Success expected'),
               (val) => expect(1, val));
+      getFutureDouble().tryCatch();
+
+      getInt().tryCatch();
+      int i = 0;
     });
 
     test('Composition test', () async {

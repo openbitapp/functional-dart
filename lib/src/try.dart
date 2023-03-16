@@ -19,8 +19,8 @@ Validation<T> Try<T>(T Function () tryBlock) {
   }
 } 
 
-extension TryExt on Future {
-  Future<Validation<T>> tryCatch<T>() =>
+extension TryExt<T> on Future<T> {
+  Future<Validation<T>> tryCatch() =>
       then((value) => Valid<T>(value)).catchError((err) {
         if (err is Exception) {
           return Invalid<T>([Fail.withException(err)]);
@@ -36,9 +36,9 @@ extension TryExt on Future {
       });
 }
 
-extension TryFutureValidation on Future<Validation> {
-  Future<Validation<T>> tryCatch<T>() =>
-      then((value) => value as Validation<T>).catchError((err) {
+extension TryFutureValidation<T> on Future<Validation<T>> {
+  Future<Validation<T>> tryCatch() =>
+      then((value) => value).catchError((err) {
         if (err is Exception) {
           return Invalid<T>([Fail.withException(err)]);
         } else if (err is Error) {
