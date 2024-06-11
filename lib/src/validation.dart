@@ -76,6 +76,8 @@ class Validation<T> {
                 {
                   return Invalid<T>([Fail.withError(err)]);
                 }
+
+                return Invalid<T>([Fail.withError(Error())]);
               });
 }
 

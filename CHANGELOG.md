@@ -11,3 +11,7 @@
 ## 1.0.3
 
 - Fixed some type inference and removed toValid extensions on Objects 
+
+## 1.0.4
+
+- Updated Flutter sdk 
